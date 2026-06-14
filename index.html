@@ -573,6 +573,30 @@
     .progress {
       will-change: width;
     }
+
+    .hero-copy-wrap,
+    .orbital-card,
+    .service-card,
+    .media-card,
+    .step,
+    .cta-box,
+    .admin-panel {
+      contain: layout paint;
+    }
+
+    .planet,
+    .grave-stone,
+    .float-card,
+    .floating-whatsapp,
+    .btn-primary::after {
+      will-change: transform, translate, opacity;
+    }
+
+    body {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     .hero-copy-wrap {
       animation: heroRise 1.05s cubic-bezier(.2,.8,.2,1) both;
     }
@@ -699,23 +723,23 @@
     }
 
     @keyframes stoneFloat {
-      0%, 100% { margin-top: 0; }
-      50% { margin-top: -16px; }
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -16px; }
     }
 
     @keyframes cardFloatOne {
-      0%, 100% { margin-top: 0; margin-left: 0; }
-      50% { margin-top: -12px; margin-left: 8px; }
+      0%, 100% { translate: 0 0; }
+      50% { translate: 8px -12px; }
     }
 
     @keyframes cardFloatTwo {
-      0%, 100% { margin-top: 0; margin-right: 0; }
-      50% { margin-top: 14px; margin-right: 8px; }
+      0%, 100% { translate: 0 0; }
+      50% { translate: -8px 14px; }
     }
 
     @keyframes cardFloatThree {
-      0%, 100% { margin-bottom: 0; margin-left: 0; }
-      50% { margin-bottom: -10px; margin-left: -8px; }
+      0%, 100% { translate: 0 0; }
+      50% { translate: -8px 10px; }
     }
 
     @keyframes shine {
@@ -851,6 +875,18 @@
       background: rgba(53,208,127,0.08);
       display: grid;
       gap: 14px;
+    }
+
+    .admin-section {
+      border-style: solid;
+      background:
+        linear-gradient(135deg, rgba(53,208,127,0.09), rgba(255,255,255,0.045));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 55px rgba(0,0,0,0.18);
+    }
+
+    .admin-section h3 {
+      font-size: 21px;
+      letter-spacing: -0.4px;
     }
 
     .admin-media-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -1085,7 +1121,10 @@
         </div>
 
         <div id="adminView" class="hidden">
-          <div class="admin-grid">
+          <div class="upload-zone admin-section">
+            <h3>Business settings</h3>
+            <p style="color: var(--muted); font-size: 14px;">Update contact details, main hero text, Instagram profile, CTA text, and recovery PIN.</p>
+            <div class="admin-grid">
             <div class="field">
               <label for="adminBrand">Business / Brand name</label>
               <input id="adminBrand" type="text" placeholder="Grave Care Services" />
@@ -1123,10 +1162,11 @@
               <input id="newPin" type="password" placeholder="Leave blank to keep current PIN" />
             </div>
           </div>
+          </div>
 
-          <div class="upload-zone" style="margin-top: 18px;">
+          <div class="upload-zone admin-section" style="margin-top: 18px;">
             <h3>Website text editor</h3>
-            <p style="color: var(--muted); font-size: 14px;">Edit every public text section from here. Changes are saved to Supabase and shown to all visitors.</p>
+            <p style="color: var(--muted); font-size: 14px;">This is a separate section for changing all public website wording, button labels, footer text, SEO title and SEO description. Changes are saved to Supabase and shown to all visitors.</p>
             <div id="copyEditor" class="admin-grid"></div>
           </div>
 
@@ -1136,7 +1176,7 @@
             <button class="btn btn-danger" id="logoutAdmin" type="button">Lock Admin</button>
           </div>
 
-          <div class="upload-zone">
+          <div class="upload-zone admin-section">
             <h3>Add Instagram posts / reels</h3>
             <p style="color: var(--muted); font-size: 14px;">Upload your images and videos directly to Instagram, then paste the post/reel link here. This saves storage space and helps your work reach more local customers.</p>
             <div class="admin-grid">
@@ -1180,6 +1220,8 @@
     const RECOVERY_PIN = "1234";
 
     const defaultCopy = {
+      seoTitle: "Grave Care Services | Professional Grave Maintenance in Srinagar",
+      seoDescription: "Professional grave maintenance in Srinagar. We clean, align, restore and maintain graves with care. Contact us on WhatsApp to start.",
       navServicesLabel: "Services",
       navWorkLabel: "Our work",
       navInstagramLabel: "Instagram",
@@ -1236,6 +1278,7 @@
     };
 
     const copyFields = [
+      ["SEO / Local", [["seoTitle","Browser/page title"],["seoDescription","Search description","textarea"]]],
       ["Navigation", [["navServicesLabel","Services nav label"],["navWorkLabel","Our work nav label"],["navInstagramLabel","Instagram nav label"],["navContactLabel","Contact nav label"]]],
       ["Hero", [["eyebrow","Brand line"],["heroWhatsappButton","WhatsApp button"],["heroWorkButton","Work button"],["heroInstagramButton","Instagram button"],["floatOneTitle","Floating card 1 title"],["floatOneText","Floating card 1 text","textarea"],["floatTwoTitle","Floating card 2 title"],["floatTwoText","Floating card 2 text","textarea"],["floatThreeTitle","Floating card 3 title"],["floatThreeText","Floating card 3 text","textarea"]]],
       ["Services", [["servicesTag","Services tag"],["servicesHeading","Services heading"],["servicesSubtext","Services subtext","textarea"],["service1Title","Service 1 title"],["service1Text","Service 1 text","textarea"],["service2Title","Service 2 title"],["service2Text","Service 2 text","textarea"],["service3Title","Service 3 title"],["service3Text","Service 3 text","textarea"],["service4Title","Service 4 title"],["service4Text","Service 4 text","textarea"],["service5Title","Service 5 title"],["service5Text","Service 5 text","textarea"],["service6Title","Service 6 title"],["service6Text","Service 6 text","textarea"]]],
@@ -1436,6 +1479,14 @@
         const el = document.getElementById(id);
         if (el) el.textContent = copy[key] || "";
       });
+      if (copy.seoTitle) document.title = copy.seoTitle;
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement("meta");
+        metaDescription.name = "description";
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.content = copy.seoDescription || "";
     }
 
     function applySettings() {
@@ -2042,6 +2093,5 @@
       initScroll3D();
     })();
   </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
